@@ -291,6 +291,8 @@ ul { list-style: none; }
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  /* Background-style video: don’t capture taps meant for hero CTAs */
+  pointer-events: none;
 }
 
 .hero-overlay {

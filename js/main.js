@@ -2,6 +2,31 @@
    Pure Form Cabinetry — main.js
    ============================================================ */
 
+/* ---------- Hero video: iOS / mobile autoplay ---------- */
+(function initHeroVideo() {
+  const heroVideo = document.querySelector('.hero-video');
+  if (!heroVideo) return;
+
+  heroVideo.muted = true;
+  heroVideo.defaultMuted = true;
+  heroVideo.setAttribute('playsinline', '');
+  heroVideo.setAttribute('webkit-playsinline', '');
+
+  function tryPlay() {
+    const p = heroVideo.play();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  }
+
+  tryPlay();
+  heroVideo.addEventListener('loadeddata', tryPlay, { once: true });
+  heroVideo.addEventListener('canplay', tryPlay, { once: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) tryPlay();
+  });
+  /* iOS may defer autoplay until there has been a user gesture */
+  document.addEventListener('touchstart', tryPlay, { once: true, passive: true, capture: true });
+})();
+
 /* ---------- Nav: scroll class + hamburger ---------- */
 const nav = document.querySelector('.nav');
 const hamburger = document.querySelector('.nav-hamburger');
