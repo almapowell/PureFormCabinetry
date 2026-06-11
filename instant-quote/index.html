@@ -68,13 +68,11 @@
         <iframe
           id="quote-frame"
           class="quote-frame"
-          src="/instant-quote/quote-app.html"
+          src="/instant-quote/quote-app.html?v=20260611"
           title="Pure Form Cabinetry — Free Cabinet Quote"
           allow="clipboard-write"
         ></iframe>
       </div>
-
-      <a href="/" class="iq-back">← Back to Home</a>
     </div>
   </main>
 
@@ -105,28 +103,8 @@
       width: 100%;
       border: 0;
       background: var(--bg, #0d0d0d);
-      /* The embedded tool is a full-screen app, so we give the frame a fixed
-         height that fills the screen below the header and let the app scroll
-         internally. This is reliable on every device — there's no JS height
-         measurement that can come up short and clip the content off-screen.
-         dvh tracks the real viewport as mobile browser chrome shows/hides. */
-      height: calc(100vh - 9.5rem);
-      height: calc(100dvh - 9.5rem);
-      min-height: 460px;
+      height: 700px;
     }
-    .iq-back {
-      display: inline-block;
-      margin-top: 1.75rem;
-      font-family: var(--font-head, sans-serif);
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted, #999);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .iq-back:hover { color: var(--text, #f0f0f0); }
 
     /* ---- Mobile header: a big logo that spreads the width ----
        The shared stylesheet hides .nav-cta below 768px and relies on a
@@ -168,12 +146,7 @@
         border-radius: 0;
         box-shadow: none;
         background: transparent;
-      }
-      .iq-back { display: none; }
-      .quote-frame {
-        height: calc(100vh - 4.75rem);
-        height: calc(100dvh - 4.75rem);
-        min-height: 0;
+        padding-top: 0;
       }
     }
   </style>
