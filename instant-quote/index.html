@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Instant Quote | Pure Form Cabinetry — Custom Cabinets, Utah</title>
+  <meta name="description" content="Get an instant, no-obligation quote for custom cabinets from Pure Form Cabinetry. Based in Eagle Mountain, serving all of Utah." />
+  <link rel="canonical" href="https://www.pureformcabinetry.com/instant-quote" />
+
+  <link rel="icon" href="/images/logo-mark.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/images/logo-mark.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.pureformcabinetry.com/instant-quote" />
+  <meta property="og:title" content="Instant Quote | Pure Form Cabinetry" />
+  <meta property="og:description" content="Get an instant, no-obligation quote for custom cabinets. Serving all of Utah." />
+  <meta property="og:image" content="https://www.pureformcabinetry.com/images/kitchen-island.png" />
+  <meta property="og:site_name" content="Pure Form Cabinetry" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+  <!-- ======================================================
+       NAVIGATION
+  ====================================================== -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="Pure Form Cabinetry — Home">
+        <img src="/images/logo-mark.png" alt="" class="nav-logo-mark" width="1024" height="576" decoding="async" />
+        <div class="nav-logo-text">
+          Pure Form
+          <span>Cabinetry</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/#home">Home</a>
+        <a href="/#services">Services</a>
+        <a href="/#gallery">Gallery</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+
+      <a href="tel:+13858886138" class="btn btn-primary nav-cta">Call Us</a>
+    </div>
+  </header>
+
+  <!-- ======================================================
+       INSTANT QUOTE
+       Paste your instant quote code inside the section below.
+  ====================================================== -->
+  <main class="instant-quote-page">
+    <div class="iq-wrap">
+      <!-- The quote tool is a self-contained app embedded below. It auto-sizes
+           to its content (see script) and is framed as a card so it reads as a
+           designed widget rather than a bare column on the page. -->
+      <div class="iq-card">
+        <iframe
+          id="quote-frame"
+          class="quote-frame"
+          src="/instant-quote/quote-app.html"
+          title="Pure Form Cabinetry — Free Cabinet Quote"
+          scrolling="no"
+          allow="clipboard-write"
+        ></iframe>
+      </div>
+
+      <a href="/" class="iq-back">← Back to Home</a>
+    </div>
+  </main>
+
+  <style>
+    .instant-quote-page {
+      /* Clear the fixed nav, add breathing room, and a subtle on-brand glow
+         so the card sits in an intentional space rather than flat black. */
+      padding: 6rem 1.25rem 4.5rem;
+      min-height: 100vh;
+      background:
+        radial-gradient(70% 55% at 50% 0%, rgba(204, 34, 34, 0.07), transparent 72%),
+        var(--bg, #0d0d0d);
+    }
+    .iq-wrap {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .iq-card {
+      border: 1px solid var(--border, #2e2e2e);
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--surface, #191919);
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.55);
+    }
+    .quote-frame {
+      display: block;
+      width: 100%;
+      border: 0;
+      overflow: hidden;
+      background: var(--bg, #0d0d0d);
+      /* Holds the loading splash before JS measures real content height.
+         Kept in px (not vh) so it can never feed back into the measured height. */
+      min-height: min-content;
+    }
+    .iq-back {
+      display: inline-block;
+      margin-top: 1.75rem;
+      font-family: var(--font-head, sans-serif);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted, #999);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .iq-back:hover { color: var(--text, #f0f0f0); }
+
+    @media (max-width: 640px) {
+      .instant-quote-page { padding: 5rem 0.85rem 3.5rem; }
+      .iq-card { border-radius: 14px; }
+    }
+  </style>
+
+  <script>
+    // The embedded quote tool is same-origin, so we resize the iframe to match
+    // its content. This removes the empty black space and the inner scrollbar,
+    // letting the tool flow as a natural part of the page.
+    (function () {
+      var frame = document.getElementById('quote-frame');
+      if (!frame) return;
+      var measured = false;
+
+      function ensureFit(doc) {
+        if (!doc || !doc.head || doc.getElementById('__pf_fit')) return;
+        var s = doc.createElement('style');
+        s.id = '__pf_fit';
+        // Stop the app from forcing every screen to a full viewport height,
+        // which is what leaves the large empty area below the content.
+        s.textContent =
+          'html,body{min-height:0!important;height:auto!important;}' +
+          '.shell{min-height:0!important;padding-bottom:36px!important;}' +
+          '#s-loading,#s-thanks{min-height:440px!important;}' +
+          /* The loading splash has an inner flex div with inline min-height:70vh
+             that, inside the iframe, feeds back into the measured height and can
+             leave the bottom button clipped. Clear it so content sizes naturally. */
+          '#s-loading > div, #s-thanks > div{min-height:0!important;}';
+        doc.head.appendChild(s);
+      }
+
+      function sync() {
+        var doc;
+        try { doc = frame.contentDocument || frame.contentWindow.document; }
+        catch (e) { return; }
+        if (!doc || !doc.body) return;
+        ensureFit(doc);
+        var h = Math.max(
+          doc.body.scrollHeight,
+          doc.body.offsetHeight,
+          doc.documentElement ? doc.documentElement.scrollHeight : 0
+        );
+        if (h > 0) {
+          frame.style.height = h + 'px';
+          if (!measured) { frame.style.minHeight = '0'; measured = true; }
+        }
+      }
+
+      // The bundle swaps its whole document after load, so re-sync frequently
+      // while it unpacks, then on a light interval to track survey steps.
+      frame.addEventListener('load', function () {
+        sync();
+        [100, 300, 600, 1000, 1600, 2400, 3500].forEach(function (t) {
+          setTimeout(sync, t);
+        });
+        setInterval(sync, 750);
+        try { frame.contentWindow.addEventListener('resize', sync); } catch (e) {}
+      });
+      window.addEventListener('resize', sync);
+    })();
+  </script>
+
+  <!-- Script -->
+  <script src="/js/main.js"></script>
+</body>
+</html>

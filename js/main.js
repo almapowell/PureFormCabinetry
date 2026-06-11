@@ -185,24 +185,3 @@ const statsObserver = new IntersectionObserver(entries => {
 const statsEl = document.querySelector('.stats');
 if (statsEl) statsObserver.observe(statsEl);
 
-/* ---------- Contact form ---------- */
-const form = document.getElementById('contact-form');
-if (form) {
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const btn = form.querySelector('.form-submit');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    // Simulate submission (wire up to Formspree / backend later)
-    setTimeout(() => {
-      btn.textContent = 'Message Sent!';
-      btn.style.background = '#2d7a2d';
-      form.reset();
-      setTimeout(() => {
-        btn.textContent = 'Get Your Free Quote';
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 4000);
-    }, 1200);
-  });
-}
