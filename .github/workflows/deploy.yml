@@ -1,0 +1,45 @@
+name: Deploy to Pages
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Allow GITHUB_TOKEN to deploy to Pages and verify the deployment origin.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; don't cancel in-progress production runs.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Runs on every push and PR: confirms the upload artifact is valid.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Static site — publish the repository root as-is (no build step).
+          path: "."
+
+  # Only deploys on pushes to main, so PRs never publish to the live domain.
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
