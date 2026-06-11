@@ -60,16 +60,16 @@
   ====================================================== -->
   <main class="instant-quote-page">
     <div class="iq-wrap">
-      <!-- The quote tool is a self-contained app embedded below. It auto-sizes
-           to its content (see script) and is framed as a card so it reads as a
-           designed widget rather than a bare column on the page. -->
+      <!-- The quote tool is a self-contained, full-screen app embedded below.
+           The frame fills the viewport and the app scrolls internally, so it
+           works reliably on phones and every screen size. Framed as a card so
+           it reads as a designed widget rather than a bare column. -->
       <div class="iq-card">
         <iframe
           id="quote-frame"
           class="quote-frame"
           src="/instant-quote/quote-app.html"
           title="Pure Form Cabinetry — Free Cabinet Quote"
-          scrolling="no"
           allow="clipboard-write"
         ></iframe>
       </div>
@@ -84,6 +84,7 @@
          so the card sits in an intentional space rather than flat black. */
       padding: 6rem 1.25rem 4.5rem;
       min-height: 100vh;
+      min-height: 100dvh;
       background:
         radial-gradient(70% 55% at 50% 0%, rgba(204, 34, 34, 0.07), transparent 72%),
         var(--bg, #0d0d0d);
@@ -103,11 +104,15 @@
       display: block;
       width: 100%;
       border: 0;
-      overflow: hidden;
       background: var(--bg, #0d0d0d);
-      /* Holds the loading splash before JS measures real content height.
-         Kept in px (not vh) so it can never feed back into the measured height. */
-      min-height: min-content;
+      /* The embedded tool is a full-screen app, so we give the frame a fixed
+         height that fills the screen below the header and let the app scroll
+         internally. This is reliable on every device — there's no JS height
+         measurement that can come up short and clip the content off-screen.
+         dvh tracks the real viewport as mobile browser chrome shows/hides. */
+      height: calc(100vh - 9.5rem);
+      height: calc(100dvh - 9.5rem);
+      min-height: 460px;
     }
     .iq-back {
       display: inline-block;
@@ -123,68 +128,34 @@
     }
     .iq-back:hover { color: var(--text, #f0f0f0); }
 
+    /* ---- Header: keep the Call Us button visible on every screen ----
+       The shared stylesheet hides .nav-cta below 768px and relies on a
+       hamburger menu, but this page's header has no hamburger. So we keep
+       the button pinned to the top-right and shrink the logo to make room. */
+    @media (max-width: 768px) {
+      .nav-cta {
+        display: inline-flex;
+        margin-left: auto;
+        padding: 0.6rem 1.05rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
+      .nav-logo-mark { max-width: min(calc(100vw - 11rem), 44vw); }
+    }
+    @media (max-width: 400px) {
+      .nav-cta { padding: 0.55rem 0.85rem; font-size: 0.74rem; letter-spacing: 0.03em; }
+      .nav-logo-text { display: none; }
+    }
+
     @media (max-width: 640px) {
-      .instant-quote-page { padding: 5rem 0.85rem 3.5rem; }
+      .instant-quote-page { padding: 5rem 0.7rem 2.5rem; }
       .iq-card { border-radius: 14px; }
+      .quote-frame {
+        height: calc(100vh - 8.5rem);
+        height: calc(100dvh - 8.5rem);
+      }
     }
   </style>
-
-  <script>
-    // The embedded quote tool is same-origin, so we resize the iframe to match
-    // its content. This removes the empty black space and the inner scrollbar,
-    // letting the tool flow as a natural part of the page.
-    (function () {
-      var frame = document.getElementById('quote-frame');
-      if (!frame) return;
-      var measured = false;
-
-      function ensureFit(doc) {
-        if (!doc || !doc.head || doc.getElementById('__pf_fit')) return;
-        var s = doc.createElement('style');
-        s.id = '__pf_fit';
-        // Stop the app from forcing every screen to a full viewport height,
-        // which is what leaves the large empty area below the content.
-        s.textContent =
-          'html,body{min-height:0!important;height:auto!important;}' +
-          '.shell{min-height:0!important;padding-bottom:36px!important;}' +
-          '#s-loading,#s-thanks{min-height:440px!important;}' +
-          /* The loading splash has an inner flex div with inline min-height:70vh
-             that, inside the iframe, feeds back into the measured height and can
-             leave the bottom button clipped. Clear it so content sizes naturally. */
-          '#s-loading > div, #s-thanks > div{min-height:0!important;}';
-        doc.head.appendChild(s);
-      }
-
-      function sync() {
-        var doc;
-        try { doc = frame.contentDocument || frame.contentWindow.document; }
-        catch (e) { return; }
-        if (!doc || !doc.body) return;
-        ensureFit(doc);
-        var h = Math.max(
-          doc.body.scrollHeight,
-          doc.body.offsetHeight,
-          doc.documentElement ? doc.documentElement.scrollHeight : 0
-        );
-        if (h > 0) {
-          frame.style.height = h + 'px';
-          if (!measured) { frame.style.minHeight = '0'; measured = true; }
-        }
-      }
-
-      // The bundle swaps its whole document after load, so re-sync frequently
-      // while it unpacks, then on a light interval to track survey steps.
-      frame.addEventListener('load', function () {
-        sync();
-        [100, 300, 600, 1000, 1600, 2400, 3500].forEach(function (t) {
-          setTimeout(sync, t);
-        });
-        setInterval(sync, 750);
-        try { frame.contentWindow.addEventListener('resize', sync); } catch (e) {}
-      });
-      window.addEventListener('resize', sync);
-    })();
-  </script>
 
   <!-- Script -->
   <script src="/js/main.js"></script>
